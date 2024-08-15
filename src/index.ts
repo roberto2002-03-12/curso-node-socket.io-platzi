@@ -13,6 +13,9 @@ app.get("/", (req, res) => {
   res.sendFile(__filename + "/views/index.html")
 })
 
+// nota: los namespaces son entornos de conexión en los cuales se pueden crear salas adentro de este
+// para cierto grupo de clientes conectadas al entorno
+
 // namespace general por defecto 
 // io.on('connection', socket => {
 
