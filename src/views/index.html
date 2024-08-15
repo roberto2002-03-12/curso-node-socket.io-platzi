@@ -6,13 +6,12 @@
   <title>Socket.io</title>
 </head>
 <body>
-  <h2>Funciona</h2>
+  <h1>Chat de <span id="namespace"></span></h1>
 
-  <p id="text"></p>
-  <button id="emit-to-server">Envia evento al servidor</button>
-  <button id="emit-to-last-connected">Emitir evento al último conectado</button>
+  <ul id="chat"></ul>
 
-  <p id="id-conn"></p>
+  <button id="sendMessage">Enviar mensaje</button>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/index.js"></script>
 </body>
