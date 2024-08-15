@@ -1,75 +1,37 @@
 // Socket.io para el lado del cliente
 const socket = io()
 
-function checkSocketStatus() {
-  console.log(`Estado del socket: ${socket.connected}`)
-}
+// Botones de conexión
+const connectRoom1 = document.querySelector('#connectRoom1')
+const connectRoom2 = document.querySelector('#connectRoom2')
+const connectRoom3 = document.querySelector('#connectRoom3')
 
-// estoy atrapando eventos que envia el servidor y ejecutar funciones según el evento
-// socket.on('connect', () => {
-//   console.log(`El socket se ha conectado: ${socket.id}`)
-//   checkSocketStatus()
-// })
-
-// esto solo funciona si muere el servidor
-// socket.on('disconnect', () => {
-//   checkSocketStatus()
-//   console.log(`El socket se ha desconectado: ${socket.id}`)
-// })
-
-// socket.io.on('reconnect_attempt', () => {
-//   console.log('Intento de conexión al servidor')
-// })
-
-// socket.io.on('reconnect', () => {
-//   console.log('Conexión recuperada')
-// })
-
-// socket.io.on('connect_error', () => {
-//   console.log('Falla en el intento de reconexión')
-// })
-
-// Recibir evento custom de servidor
-socket.on('welcome', data => {
-  const text = document.querySelector('#text')
-  text.textContent = data
+connectRoom1.addEventListener('click', () => {
+  socket.emit('connect to room', 'room1')
+})
+connectRoom2.addEventListener('click', () => {
+  socket.emit('connect to room', 'room2')
+})
+connectRoom3.addEventListener('click', () => {
+  socket.emit('connect to room', 'room3')
 })
 
-const emitToServer = document.querySelector('#emit-to-server')
-emitToServer.addEventListener('click', () => {
-  socket.emit('server-client', 'Se esta enviando un evento desde el cliente al servidor')
+// Enviar mensaje
+
+const sendMessage = document.querySelector('#sendMessage')
+
+sendMessage.addEventListener('click', () => {
+  // mostrar mini ventana para ingresar valor
+  const message = prompt('Escribe mensaje')
+
+  socket.emit('message', message)
 })
 
-socket.on('emit-to-everyone', data => {
-  const text = document.querySelector('#id-conn')
-  text.textContent = data
+socket.on('send message', data => {
+  const { room, message } = data
+
+  const li = document.createElement('li')
+  li.textContent = message
+
+  document.querySelector(`#${room}`).append(li)
 })
-
-const emitToLastConnected = document.querySelector('#emit-to-last-connected')
-emitToLastConnected.addEventListener('click', () => {
-  socket.emit('emit-to-last-connected', 'Evento a la última conexión')
-})
-
-socket.on('saludos', message => {
-  console.log(message)
-})
-
-// socket.on: recibir eventos
-// socket.one: solo recibe un evento en especifico una sola vez
-// socket.off: apaga eventos para que el cliente o servidor ya deje de ejecutarlos
-
-const listener = () => {
-  console.log('Se apaga el evento')
-}
-
-socket.on('off', listener)
-
-setTimeout(() => {
-  // debes usar funciones con nombres no anonimas porque el off necesita especificación
-  // para poder apagar dicho evento
-  socket.off('off', listener)
-}, 2000)
-
-// socket.on: recibir eventos
-// socket.one: solo recibe un evento en especifico una sola vez
-// socket.off: apaga eventos para que el cliente o servidor ya deje de ejecutarlos
