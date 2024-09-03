@@ -30,10 +30,18 @@ const students = io.of('students')
 
 teachers.on('connection', socket => {
   console.log(`${socket.id} se ha conectado a teachers`)
+  socket.on('send message', data => {
+    teachers.emit('message', data)
+  })
 })
 
 students.on('connection', socket => {
   console.log(`${socket.id} se ha conectado a students`)
+  socket.on('send message', data => {
+    students.emit('message', data)
+  })
 })
 
 httpServer.listen(3000)
+
+// ver documentación en socket.io para tomar en cuenta emits, on, in, except, etc.
